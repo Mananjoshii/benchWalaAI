@@ -78,18 +78,24 @@ def student_login():
     return render_template('student_login.html')
 
 # --------------------------
-# ROUTE 5 — Upload Students (CSV)
+# ROUTE — Upload Students (CSV)
 # --------------------------
 @app.route('/admin/upload_students', methods=['POST'])
 def upload_students():
     file = request.files.get('file')
+
     if not file or not file.filename.endswith('.csv'):
-        flash("Please upload a valid CSV file.", "danger")
+        flash("Please upload a valid CSV file (.csv).", "danger")
         return redirect(url_for('admin.admin_dashboard'))
 
     import csv, io
     stream = io.StringIO(file.stream.read().decode("utf-8"))
     reader = csv.DictReader(stream)
+
+    required_cols = {'usn', 'name', 'dept_code'}
+    if not required_cols.issubset(reader.fieldnames):
+        flash(f"CSV missing required columns: {required_cols}", "danger")
+        return redirect(url_for('admin.admin_dashboard'))
 
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -98,7 +104,10 @@ def upload_students():
     for row in reader:
         try:
             cursor.execute(
-                "INSERT INTO student_details (usn, name, dept_code) VALUES (%s, %s, %s)",
+                """
+                INSERT INTO student_details (usn, name, dept_code)
+                VALUES (%s, %s, %s)
+                """,
                 (
                     row['usn'].strip().upper(),
                     row['name'].strip(),
@@ -106,17 +115,16 @@ def upload_students():
                 ),
             )
             added += 1
-        except Exception:
-            conn.rollback()
+        except Exception as e:
+            print("❌ Error inserting:", row, e)
             failed += 1
+            conn.rollback()
         else:
             conn.commit()
 
     conn.close()
-    flash(f"Uploaded {added} students (failed: {failed}).", "info")
+    flash(f"✅ Uploaded {added} students (failed: {failed}).", "info")
     return redirect(url_for('admin.admin_dashboard'))
-
-
 # --------------------------
 # ROUTE 6 — Trigger Allocation
 # --------------------------
@@ -181,6 +189,90 @@ def view_classroom(classroom_name):
                            classroom_name=classroom_name,
                            total_benches=total_benches,
                            allocated_benches=allocated_benches)
+
+# --------------------------
+# ROUTE — Upload Classrooms (CSV)
+# --------------------------
+@app.route('/admin/upload_classrooms', methods=['POST'])
+def upload_classrooms():
+    file = request.files.get('file')
+    if not file or not file.filename.endswith('.csv'):
+        flash("Please upload a valid CSV file.", "danger")
+        return redirect(url_for('admin.admin_dashboard'))
+
+    import csv, io
+    stream = io.StringIO(file.stream.read().decode("utf-8"))
+    reader = csv.DictReader(stream)
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    added, failed = 0, 0
+
+    for row in reader:
+        try:
+            cursor.execute("""
+                INSERT INTO classroom_details 
+                (classroom_name, dept_code, no_of_benches, bench_capacity, location)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (
+                row['classroom_name'].strip(),
+                row['dept_code'].strip().upper(),
+                int(row['no_of_benches']),
+                int(row['bench_capacity']),
+                row.get('location', '').strip()
+            ))
+            conn.commit()
+            added += 1
+        except Exception as e:
+            conn.rollback()
+            failed += 1
+            print("Classroom insert failed:", e)
+
+    conn.close()
+    flash(f"Uploaded {added} classrooms (failed: {failed}).", "info")
+    return redirect(url_for('admin.admin_dashboard'))
+
+
+# --------------------------
+# ROUTE — Upload Exam Sessions (CSV)
+# --------------------------
+@app.route('/admin/upload_exams', methods=['POST'])
+def upload_exams():
+    file = request.files.get('file')
+    if not file or not file.filename.endswith('.csv'):
+        flash("Please upload a valid CSV file.", "danger")
+        return redirect(url_for('admin.admin_dashboard'))
+
+    import csv, io
+    stream = io.StringIO(file.stream.read().decode("utf-8"))
+    reader = csv.DictReader(stream)
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    added, failed = 0, 0
+
+    for row in reader:
+        try:
+            cursor.execute("""
+                INSERT INTO exam_sessions
+                (subject_code, start_time, end_time, dept_code)
+                VALUES (%s, %s, %s, %s)
+            """, (
+                row['subject_code'].strip().upper(),
+                row['start_time'].strip(),  # format: YYYY-MM-DD HH:MM:SS
+                row['end_time'].strip(),
+                row['dept_code'].strip().upper()
+            ))
+            conn.commit()
+            added += 1
+        except Exception as e:
+            conn.rollback()
+            failed += 1
+            print("Exam insert failed:", e)
+
+    conn.close()
+    flash(f"Uploaded {added} exam sessions (failed: {failed}).", "info")
+    return redirect(url_for('admin.admin_dashboard'))
 
 # --------------------------
 # Run the Flask app
