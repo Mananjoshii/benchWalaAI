@@ -1,0 +1,201 @@
+text,intent
+Tell me my exam hall,get_exam_hall
+Where is my exam hall?,get_exam_hall
+What is my exam room?,get_exam_hall
+Which hall am I sitting in?,get_exam_hall
+Can you tell me where my exam will be?,get_exam_hall
+I want to know my exam hall,get_exam_hall
+Where do I have to go for my exam?,get_exam_hall
+Find my hall for the exam,get_exam_hall
+In which room is my exam scheduled?,get_exam_hall
+Please tell my exam hall,get_exam_hall
+Locate my exam hall,get_exam_hall
+Show me my exam hall,get_exam_hall
+What’s the hall for my English exam?,get_exam_hall
+Which classroom is assigned for my paper?,get_exam_hall
+Tell me where my exam will take place,get_exam_hall
+Give me my exam hall details,get_exam_hall
+Which hall is assigned to me?,get_exam_hall
+Find out the room for my chemistry exam,get_exam_hall
+Show the building for my exam,get_exam_hall
+I need to know my exam hall location,get_exam_hall
+Where should I go to write my exam?,get_exam_hall
+Tell me my assigned hall,get_exam_hall
+Find the location of my exam hall,get_exam_hall
+What is the hall name for my exam?,get_exam_hall
+Give me the exam hall number,get_exam_hall
+What’s my allotted exam hall?,get_exam_hall
+Find my classroom for the exam,get_exam_hall
+Which hall do I need to attend?,get_exam_hall
+Where exactly is my exam hall?,get_exam_hall
+Give me the name of my exam hall,get_exam_hall
+Where is my seat for the maths exam?,get_seat_location
+Tell me my bench for physics,get_seat_location
+What is my seat number?,get_seat_location
+Find my seating arrangement?,get_seat_location
+Where will I sit for chemistry?,get_seat_location
+Show me my seat number,get_seat_location
+Where is my bench in the exam hall?,get_seat_location
+Tell me my seat in hall 3,get_seat_location
+What seat have I been given?,get_seat_location
+I forgot my seat number,get_seat_location
+Tell me my allocated seat,get_seat_location
+Which seat is assigned to me?,get_seat_location
+Show my bench number,get_seat_location
+Where am I sitting for the exam?,get_seat_location
+Find my position in the exam hall,get_seat_location
+I need to know my bench,get_seat_location
+Locate my seat in the hall,get_seat_location
+Tell me where I will sit,get_seat_location
+Find my place in the exam room,get_seat_location
+Give me my exam seat info,get_seat_location
+Where can I find my seat?,get_seat_location
+Show me my assigned bench,get_seat_location
+Tell my seat for today’s exam,get_seat_location
+Which bench is mine?,get_seat_location
+Give me my seat details,get_seat_location
+Tell me the seat number for my roll,get_seat_location
+Find the bench number for my exam,get_seat_location
+What is my assigned bench?,get_seat_location
+Where will I be seated?,get_seat_location
+Tell me where my seat is located,get_seat_location
+When is my next exam?,get_exam_schedule
+Tell me my exam timetable,get_exam_schedule
+Which exam do I have today?,get_exam_schedule
+When is the English paper?,get_exam_schedule
+Show me my exam dates,get_exam_schedule
+What exam do I have tomorrow?,get_exam_schedule
+When will I write the physics exam?,get_exam_schedule
+Give me my exam schedule,get_exam_schedule
+When are my upcoming exams?,get_exam_schedule
+Tell me the date of my next test,get_exam_schedule
+When is my next subject exam?,get_exam_schedule
+Show my full exam timetable,get_exam_schedule
+When do my exams start?,get_exam_schedule
+Give me the date for the math paper,get_exam_schedule
+Tell me when the chemistry exam is,get_exam_schedule
+Find my upcoming exam dates,get_exam_schedule
+Show me my complete exam plan,get_exam_schedule
+List all my exam dates,get_exam_schedule
+When will my exams finish?,get_exam_schedule
+What exam is scheduled today?,get_exam_schedule
+Give me exam timings,get_exam_schedule
+When is my first exam?,get_exam_schedule
+Tell me the timing for English exam,get_exam_schedule
+Show me schedule for all exams,get_exam_schedule
+Find the date of my next paper,get_exam_schedule
+When is my biology exam scheduled?,get_exam_schedule
+When will I write my final paper?,get_exam_schedule
+Provide my timetable for exams,get_exam_schedule
+Tell me my upcoming exam,get_exam_schedule
+When does the exam start?,get_exam_schedule
+How many benches are in hall 2?,get_hall_info
+Tell me the capacity of hall 5,get_hall_info
+Show me all the classrooms,get_hall_info
+Which hall has the most benches?,get_hall_info
+List all available exam halls,get_hall_info
+How many students can sit in hall 3?,get_hall_info
+Give me information about hall 1,get_hall_info
+Show hall details,get_hall_info
+Tell me the total benches in classroom A,get_hall_info
+How big is hall 4?,get_hall_info
+Show me details of all exam halls,get_hall_info
+List every exam hall,get_hall_info
+Tell me how many rooms are used for exams,get_hall_info
+Show seating capacity for hall 6,get_hall_info
+Provide info about classroom C,get_hall_info
+Which hall can hold 100 students?,get_hall_info
+Give me hall specifications,get_hall_info
+Show me the layout of the exam halls,get_hall_info
+Tell me how large hall 2 is,get_hall_info
+List the total number of halls,get_hall_info
+Give me hall names and sizes,get_hall_info
+How many chairs are in hall 5?,get_hall_info
+Show me the rooms available for exams,get_hall_info
+Tell me which hall is the biggest,get_hall_info
+Give me full details of all halls,get_hall_info
+List hall capacities,get_hall_info
+Provide hall-wise information,get_hall_info
+Show hall names,get_hall_info
+Tell me which hall is smallest,get_hall_info
+Give me details about exam hall 7,get_hall_info
+I'm lost can you find my exam hall?,get_exam_hall
+What is my assigned exam room number?,get_exam_hall
+Which room is my history exam in?,get_exam_hall
+I need my hall assignment for tomorrow's test,get_exam_hall
+Please check my exam hall,get_exam_hall
+Room number for my biology paper?,get_exam_hall
+Where is my assigned hall?,get_exam_hall
+What hall is roll number 105 in?,get_exam_hall
+Show me the room for my afternoon exam,get_exam_hall
+I forgot which hall I'm in,get_exam_hall
+Can you direct me to my exam room?,get_exam_hall
+Which building is my exam located in?,get_exam_hall
+Hall assignment for my ID?,get_exam_hall
+I'm not sure where to go for my test,get_exam_hall
+What's my exam location today?,get_exam_hall
+Just tell me the hall,get_exam_hall
+My hall for the English final?,get_exam_hall
+I need to know my exam hall,get_exam_hall
+Where am I supposed to be writing my exam?,get_exam_hall
+Which classroom is for my exam?,get_exam_hall
+Which desk is mine?,get_seat_location
+Show me my assigned seat,get_seat_location
+I know I'm in Hall 5 but where is my seat?,get_seat_location
+What's my bench number in that room?,get_seat_location
+Seat number for my roll call?,get_seat_location
+Can you help me find my desk?,get_seat_location
+Where do I sit?,get_seat_location
+My seating location for the test?,get_seat_location
+I need my specific seat,get_seat_location
+Please tell me my desk number,get_seat_location
+Which seat is allocated to me?,get_seat_location
+Where is my assigned chair?,get_seat_location
+My roll number is 45 where is my seat?,get_seat_location
+I can't find my seat number,get_seat_location
+Tell me my exact seat,get_seat_location
+What's my bench for the physics exam?,get_seat_location
+Find my desk location,get_seat_location
+Seating details for my ID?,get_seat_location
+Show me where to sit,get_seat_location
+Where is my place in Hall 2?,get_seat_location
+What time does my exam start?,get_exam_schedule
+Do I have any exams on Friday?,get_exam_schedule
+What's the schedule for next week's exams?,get_exam_schedule
+When is the econ paper?,get_exam_schedule
+Can I get the exam timetable?,get_exam_schedule
+What time is the math exam tomorrow?,get_exam_schedule
+Dates for all my exams please,get_exam_schedule
+When are my finals?,get_exam_schedule
+What's the timing for the chemistry lab exam?,get_exam_schedule
+Show me the exam roster,get_exam_schedule
+What's the date of my last exam?,get_exam_schedule
+I need the full exam schedule,get_exam_schedule
+What's the exam for today at 2 PM?,get_exam_schedule
+When does the first paper begin?,get_exam_schedule
+Tell me the dates for my papers,get_exam_schedule
+How long is the exam on Tuesday?,get_exam_schedule
+What's the exam calendar?,get_exam_schedule
+Are there any exams this Monday?,get_exam_schedule
+Timings for all my subjects,get_exam_schedule
+When is the physics test?,get_exam_schedule
+Tell me about Hall 5,get_hall_info
+What is the general location of Hall C?,get_hall_info
+Is Hall B air-conditioned?,get_hall_info
+How many seats are in Hall 10?,get_hall_info
+What's the total capacity of the main exam hall?,get_hall_info
+List all exam rooms and their capacities,get_hall_info
+Does Hall 4 have a projector?,get_hall_info
+Which is the largest exam hall on campus?,get_hall_info
+Give me the specs for Hall 7,get_hall_info
+Show me a map of all exam halls,get_hall_info
+General info for classroom 302?,get_hall_info
+How many students fit in room 101?,get_hall_info
+What facilities are in Hall A?,get_hall_info
+Tell me the location of Hall 4 not my exam,get_hall_info
+Show me a list of all exam centers,get_hall_info
+Is there a clock in Hall 3?,get_hall_info
+Which halls are on the ground floor?,get_hall_info
+How many benches does Hall 1 have?,get_hall_info
+Provide details on all exam rooms,get_hall_info
+What's the seating arrangement in Hall B like?,get_hall_info
