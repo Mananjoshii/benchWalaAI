@@ -1,30 +1,603 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Exam Details</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Seat | Nexus Portal</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+    <style>
+      :root {
+        --bg: #0a0e17;
+        --card-bg: rgba(20, 25, 40, 0.7);
+        --glass: rgba(255, 255, 255, 0.05);
+        --primary: #00d4ff;
+        --success: #00ff88;
+        --danger: #ff2d55;
+        --text: #e0e6ff;
+        --text-muted: #8892b0;
+        --border: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 100%);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+      }
+      body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23222a44" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>')
+          repeat;
+        opacity: 0.3;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .container {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        padding: 2rem 0;
+        position: relative;
+      }
+      .header h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 2.8rem;
+        background: linear-gradient(90deg, #00d4ff, #00ff88);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+      @keyframes glow {
+        from {
+          filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+        }
+        to {
+          filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.8));
+        }
+      }
+
+      /* Info Panel */
+      .info-panel {
+        background: var(--card-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 560px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.4s ease;
+      }
+      .info-panel:hover {
+        transform: translateY(-8px);
+      }
+      .info-panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--primary),
+          transparent
+        );
+        animation: scan 3s linear infinite;
+      }
+      @keyframes scan {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.8rem 0;
+        border-bottom: 1px dashed var(--border);
+        font-size: 1rem;
+      }
+      .info-row:last-child {
+        border: none;
+      }
+      .info-label {
+        color: var(--text-muted);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .info-value {
+        color: var(--text);
+        font-weight: 700;
+        text-align: right;
+      }
+      .highlight {
+        color: var(--primary);
+        font-weight: 800;
+        font-size: 1.1em;
+      }
+
+      /* 3D Classroom */
+      .classroom-3d {
+        perspective: 1200px;
+        margin: 3rem auto;
+        max-width: 900px;
+        padding: 2rem;
+        position: relative;
+      }
+      .classroom-stage {
+        transform-style: preserve-3d;
+        transform: rotateX(15deg) scale(0.95);
+        transition: transform 0.6s ease;
+      }
+      .classroom-3d:hover .classroom-stage {
+        transform: rotateX(10deg) scale(1);
+      }
+
+      .front-wall {
+        height: 60px;
+        background: linear-gradient(180deg, #1e293b, #0f172a);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+      }
+      .front-wall::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.05),
+          transparent
+        );
+        animation: shimmer 4s infinite;
+      }
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      .column-labels {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .bench-row {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 1.8rem;
+        position: relative;
+      }
+      .row-label {
+        position: absolute;
+        left: -80px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: bold;
+        color: var(--primary);
+        font-size: 1rem;
+        background: var(--card-bg);
+        padding: 4px 12px;
+        border-radius: 8px;
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--border);
+      }
+
+      .bench {
+        width: 160px;
+        height: 70px;
+        background: linear-gradient(145deg, #3d2b1f, #5d4037);
+        border-radius: 12px;
+        position: relative;
+        box-shadow: 0 8px 16px rgba(0, 0, 0.4),
+          inset 0 2px 4px rgba(255, 255, 255, 0.1);
+        display: flex;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        transform: translateZ(0);
+      }
+      .bench:hover {
+        transform: translateY(-4px) translateZ(20px);
+        box-shadow: 0 16px 32px rgba(0, 0, 0.5);
+      }
+      .bench::after {
+        content: "";
+        position: absolute;
+        top: 15%;
+        bottom: 15%;
+        left: 50%;
+        width: 3px;
+        background: #8b5a2b;
+        transform: translateX(-50%);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .seat {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #fff;
+        position: relative;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        margin: 6px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      }
+      .seat.empty {
+        background: #ff2d55;
+      }
+      .seat.alloc {
+        background: #00ff88;
+      }
+      .seat.you {
+        background: linear-gradient(135deg, #00d4ff, #0099cc);
+        animation: youPulse 2s infinite, float 3s ease-in-out infinite;
+        font-weight: 900;
+        font-size: 0.9rem;
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        position: relative;
+        z-index: 10;
+      }
+      .seat.you::after {
+        content: "YOU";
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--primary);
+        color: #000;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 900;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      }
+      @keyframes youPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(0, 212, 255, 1),
+            0 0 40px rgba(0, 212, 255, 0.6);
+        }
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+
+      /* Highlight bench that contains your seat */
+      .bench.your-bench {
+        animation: benchGlow 2s infinite;
+        transform: scale(1.08) translateZ(30px);
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.6),
+          0 12px 24px rgba(0, 0, 0, 0.5);
+      }
+      @keyframes benchGlow {
+        0%,
+        100% {
+          box-shadow: 0 0 30px rgba(0, 212, 255, 0.6),
+            0 12px 24px rgba(0, 0, 0, 0.5);
+        }
+        50% {
+          box-shadow: 0 0 45px rgba(0, 212, 255, 1),
+            0 16px 32px rgba(0, 0, 0, 0.6);
+        }
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        background: var(--glass);
+        padding: 6px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+      .legend-color {
+        width: 18px;
+        height: 18px;
+        border-radius: 6px;
+      }
+
+      .btn-back {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(8px);
+        margin: 2rem auto;
+        width: fit-content;
+      }
+      .btn-back:hover {
+        background: var(--primary);
+        color: #000;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+      }
+
+      .tilt-card {
+        transition: transform 0.4s ease;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2rem;
+        }
+        .info-panel {
+          margin: 1rem;
+          padding: 1.5rem;
+        }
+        .bench {
+          width: 120px;
+          height: 56px;
+        }
+        .bench-row {
+          gap: 1rem;
+        }
+        .row-label {
+          left: -60px;
+          font-size: 0.9rem;
+        }
+        .column-labels {
+          font-size: 0.8rem;
+        }
+      }
+    </style>
   </head>
-  <body class="bg-light">
-    <div class="container mt-5" style="max-width: 500px">
-      <h3 class="text-center mb-4">Exam Details</h3>
-      <div class="card p-3">
-        <p><strong>Name:</strong> {{ data.name }}</p>
-        <p><strong>USN:</strong> {{ data.usn }}</p>
-        <p><strong>Subject Code:</strong> {{ data.subject_code }}</p>
-        <p>
-          <strong>Exam Time:</strong> {{ data.start_time }} — {{ data.end_time
-          }}
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>EXAM SEAT ALLOCATION</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem">
+          Nexus Academic Portal • {{ data.start_time }}
         </p>
-        <p><strong>Classroom:</strong> {{ data.classroom_name }}</p>
       </div>
-      <div class="text-center mt-3">
-        <a href="{{ url_for('student_login') }}" class="btn btn-secondary"
-          >Back</a
-        >
+
+      <!-- Info Panel -->
+      <div
+        class="info-panel tilt-card"
+        data-tilt
+        data-tilt-glare
+        data-tilt-max-glare="0.3"
+      >
+        <div class="info-row">
+          <span class="info-label"><i class="ti ti-user"></i> Student</span
+          ><span class="info-value">{{ data.name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="ti ti-id"></i> USN</span
+          ><span class="info-value highlight">{{ data.usn }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="ti ti-book"></i> Subject</span
+          ><span class="info-value">{{ data.subject_code }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="ti ti-clock"></i> Time</span
+          ><span class="info-value"
+            >{{ data.start_time }} – {{ data.end_time }}</span
+          >
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="ti ti-map-pin"></i> Location</span
+          ><span class="info-value"
+            >{{ data.location }} • {{ data.classroom_name }}</span
+          >
+        </div>
+        <div class="info-row">
+          <span class="info-label"
+            ><i class="ti ti-armchair"></i> Your Seat</span
+          ><span class="info-value highlight"
+            >Bench {{ data.bench_no }} • {{ data.seat_pos | upper }} Side</span
+          >
+        </div>
       </div>
+
+      <!-- 3D Classroom Layout -->
+      <div class="classroom-3d">
+        <div class="front-wall"><span>PROJECTOR • TEACHER'S DESK</span></div>
+        <div class="column-labels">
+          <div>LEFT</div>
+          <div>MIDDLE</div>
+          <div>RIGHT</div>
+        </div>
+        <div id="classroom-grid" class="classroom-stage"></div>
+
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: #ff2d55"></div>
+            <span>Empty</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #00ff88"></div>
+            <span>Allocated</span>
+          </div>
+          <div class="legend-item">
+            <div
+              class="legend-color"
+              style="background: linear-gradient(135deg, #00d4ff, #0099cc)"
+            ></div>
+            <span>Your Seat</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Button -->
+      <a href="{{ url_for('student_login') }}" class="btn-back"
+        ><i class="ti ti-arrow-left"></i> Back to Dashboard</a
+      >
     </div>
+
+    <!-- Exam Data -->
+    <script id="exam-data" type="application/json">
+      {
+        "total": {{ data.no_of_benches | default(20) | tojson }},
+        "yourBench": {{ data.bench_no | default(10) | tojson }},
+        "yourPos": "{{ data.seat_pos | upper }}",
+        "allocated": {{ allocated_seats | tojson }}
+      }
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const data = JSON.parse(
+          document.getElementById("exam-data").textContent
+        );
+        const grid = document.getElementById("classroom-grid");
+        const benchesPerCol = Math.ceil(data.total / 3);
+        let benchNo = 1;
+        const yourBench = data.yourBench;
+        const yourPos = data.yourPos;
+
+        for (let row = 1; row <= benchesPerCol; row++) {
+          const rowDiv = document.createElement("div");
+          rowDiv.className = "bench-row";
+
+          const rowLabel = document.createElement("div");
+          rowLabel.className = "row-label";
+          rowLabel.textContent = `R${row}`;
+          rowDiv.appendChild(rowLabel);
+
+          for (let col = 0; col < 3; col++) {
+            if (benchNo > data.total) {
+              const spacer = document.createElement("div");
+              spacer.style.width = "160px";
+              rowDiv.appendChild(spacer);
+              continue;
+            }
+
+            const bench = document.createElement("div");
+            bench.className = "bench";
+            bench.dataset.bench = benchNo;
+
+            const seatL = createSeat(benchNo, "L");
+            const seatR = createSeat(benchNo, "R");
+
+            bench.appendChild(seatL);
+            bench.appendChild(seatR);
+            rowDiv.appendChild(bench);
+
+            // Highlight bench & seat
+            if (benchNo === yourBench) {
+              bench.classList.add("your-bench");
+              if (yourPos === "L") seatL.classList.add("you");
+              else seatR.classList.add("you");
+            }
+
+            benchNo++;
+          }
+          grid.appendChild(rowDiv);
+        }
+
+        function createSeat(benchNo, side) {
+          const seat = document.createElement("div");
+          seat.className = "seat";
+          const isYou = benchNo === yourBench && side === yourPos;
+          const isAlloc = data.allocated[benchNo]?.[side];
+
+          if (isYou) {
+            seat.classList.add("you");
+            seat.textContent = ""; // text is shown via ::after
+          } else if (isAlloc) {
+            seat.classList.add("alloc");
+            seat.textContent = "X";
+          } else {
+            seat.classList.add("empty");
+            seat.textContent = `${benchNo}${side}`;
+          }
+          return seat;
+        }
+
+        // Tilt for info panel
+        VanillaTilt.init(document.querySelectorAll(".tilt-card"), {
+          max: 10,
+          speed: 400,
+          glare: true,
+          "max-glare": 0.3,
+        });
+      });
+    </script>
   </body>
 </html>

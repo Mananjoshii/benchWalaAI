@@ -1,21 +1,255 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>RVCE Exam Management</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RVCE Exam Management | Nexus Portal</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+    />
+    <style>
+      :root {
+        --bg: #0a0e17;
+        --card-bg: rgba(20, 25, 40, 0.7);
+        --glass: rgba(255, 255, 255, 0.05);
+        --primary: #00d4ff;
+        --success: #00ff88;
+        --text: #e0e6ff;
+        --text-muted: #8892b0;
+        --border: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 100%);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Animated Background Grid */
+      body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23222a44" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>')
+          repeat;
+        opacity: 0.2;
+        pointer-events: none;
+        z-index: 0;
+        animation: drift 30s linear infinite;
+      }
+      @keyframes drift {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(10px, 10px);
+        }
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 800px;
+      }
+
+      /* Hero Title */
+      .hero-title {
+        font-family: "Orbitron", sans-serif;
+        font-size: 3.5rem;
+        background: linear-gradient(90deg, #00d4ff, #00ff88, #00d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200%;
+        animation: gradientShift 6s ease infinite, pulse 2s ease-in-out infinite;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+      }
+      @keyframes gradientShift {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.02);
+        }
+      }
+
+      .subtitle {
+        color: var(--text-muted);
+        font-size: 1.3rem;
+        margin-bottom: 3rem;
+        letter-spacing: 1px;
+      }
+
+      /* Glassmorphic Button Container */
+      .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      /* Futuristic Buttons */
+      .btn-futuristic {
+        position: relative;
+        padding: 1.2rem 2.8rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        backdrop-filter: blur(10px);
+        min-width: 220px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+          0 0 20px rgba(0, 212, 255, 0);
+        animation: float 4s ease-in-out infinite;
+      }
+
+      .btn-admin {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 212, 255, 0.3),
+          rgba(0, 150, 200, 0.3)
+        );
+        color: #00d4ff;
+        border: 2px solid rgba(0, 212, 255, 0.5);
+      }
+      .btn-student {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 255, 136, 0.3),
+          rgba(0, 200, 100, 0.3)
+        );
+        color: #00ff88;
+        border: 2px solid rgba(0, 255, 136, 0.5);
+      }
+
+      .btn-futuristic::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: 0.6s;
+      }
+      .btn-futuristic:hover::before {
+        left: 100%;
+      }
+
+      .btn-futuristic:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+          0 0 40px rgba(0, 212, 255, 0.6);
+      }
+
+      .btn-futuristic:active {
+        transform: translateY(-4px) scale(1.03);
+      }
+
+      .btn-futuristic i {
+        margin-right: 12px;
+        font-size: 1.4rem;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* Footer */
+      .footer {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        z-index: 1;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+        .subtitle {
+          font-size: 1.1rem;
+        }
+        .btn-futuristic {
+          padding: 1rem 2rem;
+          min-width: 180px;
+          font-size: 1rem;
+        }
+        .btn-container {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
   </head>
-  <body class="bg-light">
-    <div class="container text-center mt-5">
-      <h1 class="mb-4">RVCE Exam Management System</h1>
-      <a href="{{ url_for('admin_login') }}" class="btn btn-primary m-2"
-        >Admin Login</a
-      >
-      <a href="{{ url_for('student_login') }}" class="btn btn-success m-2"
-        >Student Login</a
-      >
+  <body>
+    <div class="container">
+      <h1 class="hero-title">RVCE EXAM MANAGEMENT</h1>
+      <p class="subtitle">Nexus Portal • SeatSync Pro</p>
+
+      <div class="btn-container">
+        <a href="{{ url_for('admin_login') }}" class="btn-futuristic btn-admin">
+          <i class="ti ti-shield-lock"></i> Admin Login
+        </a>
+        <a
+          href="{{ url_for('student_login') }}"
+          class="btn-futuristic btn-student"
+        >
+          <i class="ti ti-user-circle"></i> Student Login
+        </a>
+      </div>
     </div>
+
+    <div class="footer">© 2025 RVCE • Powered by Nexus Academic Engine</div>
   </body>
 </html>

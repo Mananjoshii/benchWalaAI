@@ -1,37 +1,343 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Student Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Login | Nexus Portal</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+    />
+    <style>
+      :root {
+        --bg: #0a0e17;
+        --card-bg: rgba(20, 25, 40, 0.7);
+        --glass: rgba(255, 255, 255, 0.05);
+        --primary: #00d4ff;
+        --success: #00ff88;
+        --danger: #ff2d55;
+        --text: #e0e6ff;
+        --text-muted: #8892b0;
+        --border: rgba(255, 255, 255, 0.1);
+        --input-bg: rgba(30, 35, 55, 0.6);
+        --input-focus: rgba(40, 45, 70, 0.9);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 100%);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Animated Grid Background */
+      body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23222a44" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>')
+          repeat;
+        opacity: 0.25;
+        pointer-events: none;
+        z-index: 0;
+        animation: floatGrid 25s linear infinite;
+      }
+      @keyframes floatGrid {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(12px, 12px);
+        }
+      }
+
+      .login-container {
+        width: 100%;
+        max-width: 440px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Glassmorphic Login Card */
+      .login-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 2.8rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+          0 0 60px rgba(0, 255, 136, 0.15);
+        position: relative;
+        overflow: hidden;
+        animation: cardRise 1.2s ease-out;
+      }
+      @keyframes cardRise {
+        0% {
+          opacity: 0;
+          transform: translateY(40px) scale(0.94);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .login-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--success),
+          transparent
+        );
+        animation: scanLine 3s linear infinite;
+      }
+      @keyframes scanLine {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* Header */
+      .login-header {
+        text-align: center;
+        margin-bottom: 2.2rem;
+      }
+      .login-header h3 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 2.3rem;
+        background: linear-gradient(90deg, #00ff88, #00d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+        animation: titlePulse 2s ease-in-out infinite alternate;
+      }
+      @keyframes titlePulse {
+        from {
+          filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.5));
+        }
+        to {
+          filter: drop-shadow(0 0 24px rgba(0, 212, 255, 0.8));
+        }
+      }
+      .login-header p {
+        color: var(--text-muted);
+        font-size: 0.98rem;
+        margin-top: 0.6rem;
+      }
+
+      /* Floating Label Inputs */
+      .form-group {
+        position: relative;
+        margin-bottom: 1.8rem;
+      }
+      .form-control {
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-radius: 16px;
+        padding: 1rem 1.2rem 1rem 3.2rem;
+        font-size: 1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+        height: 58px;
+      }
+      .form-control:focus {
+        background: var(--input-focus);
+        border-color: var(--success);
+        box-shadow: 0 0 18px rgba(0, 255, 136, 0.4);
+        outline: none;
+      }
+      .form-control::placeholder {
+        color: transparent;
+      }
+
+      .form-label {
+        position: absolute;
+        left: 3.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 1rem;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        background: var(--card-bg);
+        padding: 0 6px;
+      }
+      .form-control:focus ~ .form-label,
+      .form-control:not(:placeholder-shown) ~ .form-label {
+        top: 0;
+        font-size: 0.8rem;
+        color: var(--success);
+        font-weight: 600;
+      }
+
+      .input-icon {
+        position: absolute;
+        left: 1.1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--success);
+        font-size: 1.3rem;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      /* Submit Button */
+      .btn-submit {
+        background: linear-gradient(135deg, #00ff88, #00cc66);
+        border: none;
+        color: #000;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        padding: 1rem;
+        border-radius: 16px;
+        font-size: 1.05rem;
+        width: 100%;
+        margin-top: 1.2rem;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+      }
+      .btn-submit:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 35px rgba(0, 255, 136, 0.5);
+      }
+      .btn-submit:active {
+        transform: translateY(0);
+      }
+      .btn-submit::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+      .btn-submit:active::after {
+        width: 320px;
+        height: 320px;
+      }
+
+      /* Flash Messages */
+      .alert {
+        border-radius: 14px;
+        border: none;
+        padding: 0.9rem 1.3rem;
+        margin-bottom: 1.6rem;
+        font-weight: 500;
+        backdrop-filter: blur(8px);
+        font-size: 0.95rem;
+      }
+      .alert-success {
+        background: rgba(0, 255, 136, 0.2);
+        color: #00ff88;
+        border: 1px solid rgba(0, 255, 136, 0.3);
+      }
+      .alert-danger {
+        background: rgba(255, 45, 85, 0.2);
+        color: #ff5f7a;
+        border: 1px solid rgba(255, 45, 85, 0.3);
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .login-card {
+          padding: 2rem;
+          border-radius: 22px;
+        }
+        .login-header h3 {
+          font-size: 1.9rem;
+        }
+        .form-control {
+          padding: 0.9rem 1rem 0.9rem 3rem;
+        }
+        .form-label {
+          left: 3rem;
+        }
+        .input-icon {
+          left: 1rem;
+        }
+      }
+    </style>
   </head>
-  <body class="bg-light">
-    <div class="container mt-5" style="max-width: 400px">
-      <h3 class="text-center mb-4">Student Login</h3>
-
-      {% with messages = get_flashed_messages(with_categories=true) %} {% if
-      messages %} {% for category, msg in messages %}
-      <div class="alert alert-{{ category }}">{{ msg }}</div>
-      {% endfor %} {% endif %} {% endwith %}
-
-      <form method="POST">
-        <div class="mb-3">
-          <label>USN</label>
-          <input type="text" name="usn" class="form-control" required />
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <!-- Header -->
+        <div class="login-header">
+          <h3>STUDENT LOGIN</h3>
+          <p>Enter USN & Subject Code</p>
         </div>
-        <div class="mb-3">
-          <label>Subject Code</label>
-          <input
-            type="text"
-            name="subject_code"
-            class="form-control"
-            required
-          />
-        </div>
-        <button class="btn btn-success w-100">Check My Exam</button>
-      </form>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}">{{ msg }}</div>
+        {% endfor %} {% endif %} {% endwith %}
+
+        <!-- Login Form -->
+        <form method="POST">
+          <div class="form-group">
+            <i class="ti ti-id input-icon"></i>
+            <input
+              type="text"
+              name="usn"
+              class="form-control"
+              placeholder=" "
+              required
+            />
+            <label class="form-label">USN</label>
+          </div>
+
+          <div class="form-group">
+            <i class="ti ti-book input-icon"></i>
+            <input
+              type="text"
+              name="subject_code"
+              class="form-control"
+              placeholder=" "
+              required
+            />
+            <label class="form-label">Subject Code</label>
+          </div>
+
+          <button type="submit" class="btn-submit">Check My Exam</button>
+        </form>
+      </div>
     </div>
   </body>
 </html>

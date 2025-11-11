@@ -48,32 +48,75 @@ def admin_dashboard():
 
 
 # --------------------------
-# ROUTE 4 — Student Login
+# ROUTE 4 — Student Login (UPDATED FOR 2-D CLASSROOM)
 # --------------------------
 @app.route('/student/login', methods=['GET', 'POST'])
 def student_login():
     if request.method == 'POST':
-        usn = request.form['usn']
-        subject_code = request.form['subject_code']
+        usn = request.form['usn'].strip().upper()
+        subject_code = request.form['subject_code'].strip().upper()
 
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
+
+        # ---- 1. Get the student's own seat -----------------
         query = """
-        SELECT s.name, s.usn, e.subject_code, e.start_time, e.end_time, c.classroom_name
+        SELECT s.name, s.usn, e.subject_code, e.start_time, e.end_time,
+               c.classroom_id, c.classroom_name, a.seat_pos, a.bench_no,
+               c.location, c.no_of_benches
         FROM allocations a
-        JOIN student_details s ON a.usn = s.usn
-        JOIN exam_sessions e ON a.exam_id = e.exam_id
+        JOIN student_details s   ON a.usn = s.usn
+        JOIN exam_sessions e     ON a.exam_id = e.exam_id
         JOIN classroom_details c ON a.classroom_id = c.classroom_id
         WHERE s.usn = %s AND e.subject_code = %s
         """
         cursor.execute(query, (usn, subject_code))
         result = cursor.fetchone()
+
+        if not result:
+            conn.close()
+            flash("No allocation found for this USN and subject.", "warning")
+            return render_template('student_login.html')
+
+        # ---- 2. Get **all** seats in the same classroom -----
+        classroom_id = result['classroom_id']
+        cursor.execute("""
+            SELECT a.bench_no, a.seat_pos, s.name AS student_name, s.usn AS student_usn
+            FROM allocations a
+            JOIN student_details s ON a.usn = s.usn
+            WHERE a.classroom_id = %s
+        """, (classroom_id,))
+        alloc_rows = cursor.fetchall()
         conn.close()
 
-        if result:
-            return render_template('student_result.html', data=result)
-        else:
-            flash("No allocation found for this USN and subject.", "warning")
+        # ---- 3. Build the structures the 2-D UI expects -----
+        allocated_seats = {}          # {bench_no: {"L": true, "R": true}}
+        student_details = {}          # {"5R": {"name": "...", "usn": "..."}}
+
+        for row in alloc_rows:
+            bench = row['bench_no']
+            side  = row['seat_pos']          # 'L' or 'R'
+            if bench not in allocated_seats:
+                allocated_seats[bench] = {}
+            allocated_seats[bench][side] = True
+
+            key = f"{bench}{side}"
+            student_details[key] = {
+                "name": row['student_name'],
+                "usn" : row['student_usn']
+            }
+
+        # ---- 4. Fallback for total benches ------------------
+        total_benches = result.get('no_of_benches') or 20
+
+        # ---- 5. Render the 2-D page -------------------------
+        return render_template(
+            "student_result.html",
+            data=result,
+            total_benches=total_benches,
+            allocated_seats=allocated_seats,   # nested dict
+            student_details=student_details    # for hover tooltips
+        )
 
     return render_template('student_login.html')
 
